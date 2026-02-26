@@ -1,8 +1,8 @@
--- ================================================================
+-- =========================================================================
 -- Exploring Dimenson tables
--- Identifying the unique values (or categories) in each dimension.
+-- Purpose: Identifying the unique values (or categories) in each dimension.
 -- Formula: DISTINCT [Dimension]
--- ================================================================
+-- =========================================================================
 
 -- Explore all Countries our customers come from.
 SELECT DISTINCT country
