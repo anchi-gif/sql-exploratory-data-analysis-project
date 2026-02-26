@@ -1,0 +1,39 @@
+-- ====================================================================================================
+-- Performance Analysis
+-- Purpose: Comparing the current value to a target value --> Measure success and compare performance.
+-- Formula: Current [Measure] - Target[Measure]
+-- ====================================================================================================
+
+/* Analyze the yearly performance of products by comparing each product'a sales 
+to both it avg sales performance and the previous year's sales */ 
+WITH yearly_product_sales AS (                         -- CTE
+SELECT 
+YEAR(f.order_date) AS order_year,
+p.product_name,
+SUM(f.sales_amount) AS current_sales
+FROM gold.fact_sales f
+LEFT JOIN gold.dim_products p
+ON f.product_key = p.product_key
+WHERE order_date IS NOT NULL
+GROUP BY YEAR(f.order_date), p.product_name) 
+SELECT 
+order_year,
+product_name,
+current_sales,
+AVG(current_sales) OVER(PARTITION BY product_name) AS avg_sales,
+current_sales - AVG(current_sales) OVER(PARTITION BY product_name) AS diff_avg,
+CASE
+	  WHEN current_sales - AVG(current_sales) OVER(PARTITION BY product_name) > 0 THEN 'Above Avg'
+    WHEN current_sales - AVG(current_sales) OVER(PARTITION BY product_name) < 0 THEN 'Below Avg'
+    ELSE 'Avg'
+END AS avg_change,
+-- Year_over_year Analysis (can do also month_over_month)
+LAG(current_sales) OVER (PARTITION BY product_name ORDER BY order_year ASC) AS previous_year_sales,
+current_sales - LAG(current_sales) OVER (PARTITION BY product_name ORDER BY order_year ASC) AS diff_previous_year,
+CASE
+	  WHEN current_sales - LAG(current_sales) OVER (PARTITION BY product_name ORDER BY order_year ASC) > 0 THEN 'Increasing'
+    WHEN current_sales - LAG(current_sales) OVER (PARTITION BY product_name ORDER BY order_year ASC) < 0 THEN 'Decreasing'
+    ELSE 'No Change'
+END AS previous_year_change
+FROM yearly_product_sales
+ORDER BY product_name, order_year;
