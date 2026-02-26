@@ -1,9 +1,8 @@
--- =======================================================
+-- ================================================================
 -- 2.Exploring date dimension.
--- Identifying the earliest and latest dates (boundaries).
--- Understand the scope of the data and the timespan. 
--- MIN / MAX [Date Dimension]
--- =======================================================
+-- Purpose: Identifying the earliest and latest dates (boundaries).
+-- Formula: MIN/MAX [Date Dimension]
+-- ================================================================
  -- Find the date of the first and last order.
 SELECT 
 	  MIN(order_date) AS first_order_date,
