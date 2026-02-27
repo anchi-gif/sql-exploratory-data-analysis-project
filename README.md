@@ -117,7 +117,6 @@ These queries consolidate key business metrics into structured analytical output
 3. Reporting queries can be used as analytical views for dashboards or BI tools.
 
 ---
-
-- Analytical reasoning progression  
-- Structured repository organization  
-- Business-oriented metric analysis
+## Acknowledgment
+This project was inspired by the SQL courses by Data With Baraa.
+The implementation, organisation, structure reflect my work and learning process.
